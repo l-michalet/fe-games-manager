@@ -53,7 +53,7 @@ function Home() {
                     <HomeTitle theme={theme}>
                         Prepare, schedule and manage your tournaments and championships
                     </HomeTitle>
-                    <StyledLink to="/teams" $isFullLink>
+                    <StyledLink to="/form" $isFullLink>
                         Start
                     </StyledLink>
                 </LeftColumn>

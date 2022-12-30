@@ -10,6 +10,8 @@ import { ThemeProvider } from './utils/context'
 import Teams from "./pages/Teams";
 import Groups from "./pages/Groups";
 import Schedule from "./pages/Schedule";
+import TournamentForm from "./pages/TournamentForm";
+import {FormProvider} from "./context/FormContext";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -20,6 +22,11 @@ ReactDOM.render(
                 <Switch>
                     <Route exact path="/">
                         <Home />
+                    </Route>
+                    <Route path="/form">
+                        <FormProvider>
+                            <TournamentForm />
+                        </FormProvider>
                     </Route>
                     <Route path="/teams">
                         <Teams />

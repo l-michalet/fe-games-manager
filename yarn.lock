@@ -2056,7 +2056,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
+"@types/react@*", "@types/react@^18.0.26":
   "integrity" "sha1-itWfwB/vjq9cdPTqOSYhdJ8LeRc="
   "resolved" "https://repo.symphony.com/artifactory/api/npm/npm-virtual-dev/@types/react/-/react-18.0.26.tgz"
   "version" "18.0.26"
