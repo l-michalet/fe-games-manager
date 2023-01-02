@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useForm, FormActions } from '../../context/FormContext';
-import { Theme } from '../../components/Theme';
+import { useForm, FormActions } from '../../../context/FormContext';
+import { Theme } from '../../../components/TournamentForm/Theme';
 import styled from "styled-components";
+import {useTheme} from "../../../utils/hooks";
 
 const Container = styled.div`
   padding: 50px;
@@ -13,7 +14,7 @@ const Container = styled.div`
   h2 {
     display: block;
     margin-bottom: 5px;
-    color: rgb(91, 24, 153);
+    color: ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')} ;
   }
   label {
     display: block;
@@ -24,13 +25,12 @@ const Container = styled.div`
     width: 120px;
     height: 50px;
     border-radius: 10px;
-    background-color: rgb(91, 24, 153);
+    background-color: ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')} ;
     color: whitesmoke;
     border: none;
     margin-top: 20px;
   }
-
-  .passo {
+  .step {
     margin-bottom: 20px;
   }
   input {
@@ -39,7 +39,7 @@ const Container = styled.div`
     box-sizing: border-box;
     width: 100%;
     padding: 20px 10px;
-    border: 2px solid rgb(91, 24, 153);
+    border: 2px solid ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')} ;
     border-radius: 10px;
     font-size: 28px;
     outline: 0;
@@ -49,6 +49,7 @@ const Container = styled.div`
 `;
 
 function FormStep1() {
+    const { theme } = useTheme()
     const history = useHistory();
     const { state, dispatch} = useForm()
 
@@ -63,7 +64,7 @@ function FormStep1() {
         if (state.name !== '') {
             history.push('/form/step2');
         } else {
-            alert('preencha os dados corretamente');
+            alert('something is wrong');
         }
     };
 
@@ -76,13 +77,13 @@ function FormStep1() {
 
     return (
         <Theme>
-            <Container>
-                <p className="passo">Passo 1/3</p>
-                <h2>Vamos começar com o seu nome</h2>
-                <p>Preencha o campo com seu nome</p>
-                <label>Seu nome completo </label>
+            <Container theme={theme}>
+                <p className="step">Step 1/4</p>
+                <h2>Do you have a name for your tournament?</h2>
+                <p>Please choose a nice one!</p>
+                <label>Tournament's name:</label>
                 <input type="text" autoFocus onChange={handleNameChange} />
-                <button onClick={handleNextStep}>Próximo</button>
+                <button onClick={handleNextStep}>Next</button>
             </Container>
         </Theme>
     );

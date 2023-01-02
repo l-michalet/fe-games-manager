@@ -1,6 +1,5 @@
 import trophy from '../../assets/trophy.png'
 import styled from "styled-components";
-import colors from "../../utils/style/colors";
 import {StyledLink} from "../../utils/style/atoms";
 import {useTheme} from "../../utils/hooks";
 
@@ -14,7 +13,6 @@ const HomeWrapper = styled.div`
 
 const HomeContainer = styled.div`
     justify-content: center;
-    background-color: ${({ theme }) => theme === 'light' ? colors.backgroundLight : colors.backgroundDark};
     display: flex;
     flex-direction: row;
     max-width: 1200px;

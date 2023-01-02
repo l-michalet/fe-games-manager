@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import { Theme } from '../../components/Theme';
-import {FormActions, useForm} from '../../context/FormContext';
+import { Theme } from '../../../components/TournamentForm/Theme';
+import {FormActions, useForm} from '../../../context/FormContext';
 import { useHistory } from 'react-router-dom';
-import { ReactComponent as CheckIcon } from '../../assets/check.svg';
+import { ReactComponent as CheckIcon } from '../../../assets/check.svg';
 import styled from "styled-components";
+import {useTheme} from "../../../utils/hooks";
 
 const Container = styled.div`
   padding: 40px;
@@ -11,12 +12,12 @@ const Container = styled.div`
   p {
     display: block;
     font-size: 25px;
-    color: rgb(91, 24, 153);
+    color:${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')};
   }
   h2 {
     display: block;
     margin-bottom: 5px;
-    color: rgb(91, 24, 153);
+    color: ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')};
     font-size: 35px;
   }
   .check-email {
@@ -29,7 +30,8 @@ const IconArea = styled.div`
 `;
 
 
-function FormStep4() {
+function FormStep5() {
+    const { theme } = useTheme()
     const { state, dispatch } = useForm()
     const history = useHistory();
 
@@ -39,28 +41,23 @@ function FormStep4() {
         } else {
             dispatch({
                 type: FormActions.setCurrentStep,
-                payload: 4,
+                payload: 5,
             });
         }
     }, []);
 
     return (
         <Theme>
-            <Container>
-                <h2>Parabéns</h2>
-                <p>Cadastro enviado com sucesso!</p>
+            <Container theme={theme}>
+                <h2>Congrats!</h2>
+                <p>Your tournament is ready to be generated!</p>
 
                 <IconArea>
                     <CheckIcon fill="rgb(91, 24, 153)" width={120} height={120} />
                 </IconArea>
-
-                <p className="check-email">
-                    Enviamos um e-mail para: <b>{state.email}</b> com a confirmação do
-                    cadastro
-                </p>
             </Container>
         </Theme>
     );
 }
 
-export default FormStep4;
+export default FormStep5;

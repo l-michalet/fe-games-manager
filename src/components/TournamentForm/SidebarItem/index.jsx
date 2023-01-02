@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ReactComponent as ProfileIcon } from '../../assets/profile.svg';
-import { ReactComponent as BookIcon } from '../../assets/book.svg';
-import { ReactComponent as MailIcon } from '../../assets/mail.svg';
-import { ReactComponent as CheckIcon } from '../../assets/check.svg';
+import { ReactComponent as ProfileIcon } from '../../../assets/profile.svg';
+import { ReactComponent as BookIcon } from '../../../assets/book.svg';
+import { ReactComponent as MailIcon } from '../../../assets/mail.svg';
+import { ReactComponent as CheckIcon } from '../../../assets/check.svg';
 import styled from "styled-components";
+import {useTheme} from "../../../utils/hooks";
 
 const Container = styled.div`
     margin: 50px 0;
@@ -39,7 +40,7 @@ const IconArea = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color:${props => props.active ? 'rgb(91, 24, 153)' : 'rgb(208, 180, 235)'};
+    background-color:${props => props.active ? '#000000' : 'rgb(208, 180, 235)'};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,7 +53,7 @@ const Point = styled.div`
     border-radius: 50%;
     margin-left: 30px;
     margin-right: -6px;
-    background-color:${props => props.active ? 'rgb(91, 24, 153)' : 'rgb(208, 180, 235)'};
+    background-color:${props => props.active ? '#000000' : 'rgb(208, 180, 235)'};
 `;
 
 type Props = {
@@ -64,8 +65,9 @@ type Props = {
 };
 
 const SidebarItem = ({ title, description, icon, path, active }: Props) => {
+    const { theme } = useTheme()
     return (
-        <Container>
+        <Container theme={theme}>
             <Link to={path}>
                 <Info>
                     <Title>{title}</Title>

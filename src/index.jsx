@@ -7,7 +7,6 @@ import Home from './pages/Home'
 import Error from './components/Error'
 import Footer from "./components/Footer";
 import { ThemeProvider } from './utils/context'
-import Teams from "./pages/Teams";
 import Groups from "./pages/Groups";
 import Schedule from "./pages/Schedule";
 import TournamentForm from "./pages/TournamentForm";
@@ -27,9 +26,6 @@ ReactDOM.render(
                         <FormProvider>
                             <TournamentForm />
                         </FormProvider>
-                    </Route>
-                    <Route path="/teams">
-                        <Teams />
                     </Route>
                     <Route path="/groups">
                         <Groups />

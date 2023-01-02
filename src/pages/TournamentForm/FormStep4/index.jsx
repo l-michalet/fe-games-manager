@@ -1,8 +1,9 @@
 import React, { ChangeEvent, useEffect } from 'react';
-import { Theme } from '../../components/Theme';
+import { Theme } from '../../../components/TournamentForm/Theme';
 import { Link, useHistory } from 'react-router-dom';
-import {FormActions, useForm} from '../../context/FormContext';
+import {FormActions, useForm} from '../../../context/FormContext';
 import styled from "styled-components";
+import {useTheme} from "../../../utils/hooks";
 
 const Container = styled.div`
   padding: 30px;
@@ -25,7 +26,7 @@ const Container = styled.div`
     width: 120px;
     height: 50px;
     border-radius: 10px;
-    background-color: rgb(91, 24, 153);
+    background-color: ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')};
     color: whitesmoke;
     border: none;
     margin-top: 20px;
@@ -35,7 +36,7 @@ const Container = styled.div`
     text-decoration: none;
     color: rgb(91, 24, 153);
   }
-  .passo {
+  .step {
     margin-bottom: 20px;
   }
   input {
@@ -44,7 +45,7 @@ const Container = styled.div`
     box-sizing: border-box;
     width: 100%;
     padding: 20px 10px;
-    border: 2px solid rgb(91, 24, 153);
+    border: 2px solid ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')};
     border-radius: 10px;
     font-size: 28px;
     outline: 0;
@@ -53,15 +54,16 @@ const Container = styled.div`
   }
 `;
 
-function FormStep3() {
+function FormStep4() {
+    const { theme } = useTheme()
     const { state, dispatch } = useForm()
     const history = useHistory();
 
     const handleNextStep = () => {
         if (state.email !== '' && state.github !== '') {
-            history.push('/form/step4');
+            history.push('/form/step5');
         } else {
-            alert('preencha os dados corretamente');
+            alert('something is wrong');
         }
     };
 
@@ -85,33 +87,33 @@ function FormStep3() {
         } else {
             dispatch({
                 type: FormActions.setCurrentStep,
-                payload: 3,
+                payload: 4,
             });
         }
     }, []);
 
     return (
         <Theme>
-            <Container>
-                <p className='passo'>Passo 3/3</p>
-                <h2>Legal {state.name}, onde te achamos?</h2>
-                <p>Preencha com seus contatos para conseguirmos entrar em contato.</p>
+            <Container theme={theme}>
+                <p className='step'>Step 4/4</p>
+                <h2>Let's choose your rules for {state.name}?</h2>
+                <p>.</p>
 
-                <label>Qual o seu email?</label>
+                <label>How many teams per groups?</label>
                 <input 
                 type="email" 
                 onChange={handleEmailChange}
                 />
 
-                <label>Qual é seu GitHub?</label>
+                <label>Do you want home-and-home games?</label>
                 <input 
                 type="url" 
                 onChange={handleUrlChange}
                 />
 
                 <div>
-                    <Link to='/form/step2'>Voltar</Link>
-                    <button onClick={handleNextStep}>Finalizar</button>
+                    <Link to='/form/step2'>Back</Link>
+                    <button onClick={handleNextStep}>Complete</button>
                 </div>
 
             </Container>
@@ -119,4 +121,4 @@ function FormStep3() {
     )
 }
 
-export default FormStep3;
+export default FormStep4;

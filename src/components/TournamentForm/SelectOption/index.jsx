@@ -1,5 +1,6 @@
 
 import styled from "styled-components";
+import {useTheme} from "../../../utils/hooks";
 
 const Container = styled.div`
     display: flex;
@@ -11,16 +12,15 @@ const Container = styled.div`
     align-items: center;
     cursor: pointer;
     &:hover {
-        border: 2px solid rgb(91, 24, 153);
+        border: 2px solid ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')} ;;
     }
-    background-color: rgb(235, 235, 235);
 `;
 
 const Icon = styled.div`
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: rgb(91, 24, 153);
+    background-color: ${({ theme }) => (theme === 'light' ? 'rgb(91, 24, 153)'  : '#000000')} ;;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,8 +43,9 @@ const Description = styled.div`
 `;
 
 function SelectOption({title, description, icon, selected, onClick}) {
+    const { theme } = useTheme()
     return (
-        <Container onClick={onClick} selected={selected}>
+        <Container onClick={onClick} selected={selected} theme={theme}>
             <Icon>{icon}</Icon>
             <Info>
                 <Title>{title}</Title>
