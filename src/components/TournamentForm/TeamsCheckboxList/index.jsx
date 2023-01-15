@@ -11,43 +11,41 @@ const Form = styled.form`
 
 const TeamsCheckboxList = (props) => {
     let count = 0;
-    const [options, setOptions] = useState(
-        props.teams.map((team) => ({
-            ...team,
-            id: ++count,
+    const [teamInfoCheckboxes, setTeamInfoCheckBoxes] = useState(
+        props.teamInfos.map((teamInfo) => ({
+            ...teamInfo,
+            value: ++count,
             isSelected: false
         }))
     );
 
-    useEffect(() => {
-        console.log('Options have changed!');
-    }, [options]);
-
     const handleChange = (event) => {
-        const newOptions = options.map((option) => {
-            console.log(option.id)
-            console.log(event.target.value)
-            if (option.id === parseInt(event.target.value)) {
-                option.isSelected = event.target.checked;
+        const newTeamInfoCheckboxes = teamInfoCheckboxes.map((teamInfoCheckbox) => {
+            if (teamInfoCheckbox.id === parseInt(event.target.value)) {
+                teamInfoCheckbox.isSelected = event.target.checked;
             }
-            return option;
+            return teamInfoCheckbox;
         });
 
-        setOptions(newOptions);
-        props.onOptionsChange(newOptions);
+        setTeamInfoCheckBoxes(newTeamInfoCheckboxes);
+
+        props.onSelectedTeamIdsChange(newTeamInfoCheckboxes
+            .filter(checkbox => checkbox.isSelected)
+            .map(checkbox => checkbox.id)
+        );
     };
 
     return (
         <Form>
-            {options.map((option) => (
-                <div key={option.id}>
+            {teamInfoCheckboxes.map((teamInfoCheckbox) => (
+                <div key={teamInfoCheckbox.id}>
                     <input
                         type="checkbox"
-                        value={option.id}
-                        checked={option.isSelected}
+                        value={teamInfoCheckbox.id}
+                        checked={teamInfoCheckbox.isSelected}
                         onChange={handleChange}
                     />
-                    <label>{option.fullName}</label>
+                    <label>{teamInfoCheckbox.fullName}</label>
                 </div>
             ))}
         </Form>

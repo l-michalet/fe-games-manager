@@ -1,42 +1,84 @@
 import {useState, useEffect, useContext} from 'react'
 import {ThemeContext} from "../context";
 
-export function useFetch(url) {
-    const [data, setData] = useState({})
-    const [isLoading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
+export function useFetch(url, method = "GET", body) {
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
 
     useEffect(() => {
         if (!url) {
             console.log("NOT URL")
-            return setLoading(true)
+            return setIsLoading(true)
         }
 
         async function fetchData() {
             try {
-                const response = await fetch(url)
-                console.log("Response")
-                console.log(response)
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                }
+
+                if (method === "POST") {
+                    options.body = JSON.stringify(body)
+                    options.headers['Content-Type'] = 'application/json'
+                }
+
+                console.log(method)
+                const response = await fetch(url, options)
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
                 const data = await response.json()
-                console.log("Data")
-                console.log(data)
                 setData(data)
             } catch (err) {
-                console.log("Error")
-                console.log(err)
-                setError(true)
+                setError(err.message)
+                console.log(err.message)
             } finally {
-                setLoading(false)
+                setIsLoading(false);
             }
-        }
-        fetchData()
-    }, [url])
-    console.log("useEffect")
-    return { isLoading, data, error }
+        };
+
+        fetchData();
+    }, []);
+
+    return { isLoading, error, data };
 }
 
 export function useTheme() {
-    console.log("useTheme")
     const { theme, toggleTheme } = useContext(ThemeContext)
     return { theme, toggleTheme }
+}
+
+export function useCreateTournament() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
+    const createTournament = async (body) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            }
+            const timeout = setTimeout(() => {
+                setIsLoading(false);
+                setError("The request timed out. Please try again later.");
+            }, 5000); // timeout after 5 seconds
+            const response = await fetch(`http://localhost:8080/tournament`, options);
+            clearTimeout(timeout);
+            const data = await response.json();
+            setData(data);
+            setIsLoading(false);
+        } catch (err) {
+            setIsLoading(false);
+            setError(err.message);
+        }
+        return error;
+    };
+    return { isLoading, error, data, createTournament };
 }

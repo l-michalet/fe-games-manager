@@ -1,9 +1,10 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Theme } from '../../../components/TournamentForm/Theme';
 import { Link, useHistory } from 'react-router-dom';
 import {FormActions, useForm} from '../../../context/FormContext';
 import styled from "styled-components";
-import {useTheme} from "../../../utils/hooks";
+import {useCreateTournament, useTheme} from "../../../utils/hooks";
+import FormStep5 from "../FormStep5";
 
 const Container = styled.div`
   padding: 30px;
@@ -59,24 +60,33 @@ function FormStep4() {
     const { state, dispatch } = useForm()
     const history = useHistory();
 
-    const handleNextStep = () => {
-        if (state.email !== '' && state.github !== '') {
+    const { createTournament } = useCreateTournament();
+
+    const handleNextStep = async () => {
+        const body = {
+            name: state.name,
+            teamInfoIds: state.selectedTeamIds,
+            nbOfGroups: state.nbOfGroups,
+        };
+        await createTournament(body);
+
+        if (state.nbOfGroups !== '' && state.tournamentType !== '') {
             history.push('/form/step5');
         } else {
             alert('something is wrong');
         }
     };
 
-    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleNbOfGroupsChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch({
-            type: FormActions.setEmail,
+            type: FormActions.setNbOfGroups,
             payload: e.target.value,
         });
     };
 
-    const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleGamesTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch({
-            type: FormActions.setGithub,
+            type: FormActions.setTournamentType,
             payload: e.target.value,
         });
     };
@@ -97,25 +107,17 @@ function FormStep4() {
             <Container theme={theme}>
                 <p className='step'>Step 4/4</p>
                 <h2>Let's choose your rules for {state.name}?</h2>
-                <p>.</p>
+                <p>Description.</p>
 
-                <label>How many teams per groups?</label>
-                <input 
-                type="email" 
-                onChange={handleEmailChange}
-                />
-
+                <label>How many groups?</label>
+                <input type="number" onChange={handleNbOfGroupsChange}/>
                 <label>Do you want home-and-home games?</label>
-                <input 
-                type="url" 
-                onChange={handleUrlChange}
-                />
+                <input type="number" onChange={handleGamesTypeChange}/>
 
                 <div>
                     <Link to='/form/step2'>Back</Link>
                     <button onClick={handleNextStep}>Complete</button>
                 </div>
-
             </Container>
         </Theme>
     )

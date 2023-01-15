@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { Theme } from '../../../components/TournamentForm/Theme';
 import {FormActions, useForm} from '../../../context/FormContext';
@@ -71,25 +71,18 @@ function FormStep2() {
         }
     }, []);
 
-    const { data, isLoading, error } = useFetch(
-        `http://localhost:8080/teams`
-    )
+    const { data, isLoading, error } = useFetch(`http://localhost:8080/teams`, 'GET', null, [])
 
-    const [options, setOptions] = useState(
-        []
-    );
-
-    const handleOptionsChange = (newOptions) => {
-        setOptions(newOptions);
+    const handleSelectedTeamIdsChange = (selectedTeamIds) => {
+        dispatch({
+            type: FormActions.setSelectedTeamIds,
+            payload: selectedTeamIds,
+        });
     };
 
     const handleNextStep = () => {
         history.push('/form/step3');
-        console.log(options.filter((option) => option.isSelected));
     };
-
-
-    console.log(data)
 
     return (
         <Theme>
@@ -101,11 +94,11 @@ function FormStep2() {
                     <TeamLoaderWrapper>
                         <Loader data-testid="loader"/>
                     </TeamLoaderWrapper>
-                ) : ( error ? (
+                ) : ( error? (
                         <ErrorText theme={theme}>There is a problem</ErrorText>
                     ) : (
                         <TeamsContainer theme={theme}>
-                            <TeamsCheckboxList teams={data} options={options} onOptionsChange={handleOptionsChange}></TeamsCheckboxList>
+                            <TeamsCheckboxList teamInfos={data} onSelectedTeamIdsChange={handleSelectedTeamIdsChange}></TeamsCheckboxList>
                         </TeamsContainer>
                     )
                 )}

@@ -3,17 +3,17 @@ import {createContext, useContext, useReducer} from 'react';
 const initialData = {
     currentStep: 0,
     name: '',
-    level: 0,
-    email: '',
-    github: '',
+    selectedTeamIds: [],
+    nbOfGroups: 0,
+    tournamentType: 'tournamentType',
 };
 
 export const FormActions = {
     setCurrentStep: 'setCurrentStep',
     setName: 'setName',
-    setLevel: 'setLevel',
-    setEmail: 'setEmail',
-    setGithub: 'setGithub',
+    setSelectedTeamIds: 'setSelectedTeamIds',
+    setNbOfGroups: 'setNbOfGroups',
+    setTournamentType: 'setTournamentType',
 };
 
 
@@ -25,12 +25,12 @@ const formReducer = (state, action) => {
             return { ...state, currentStep: action.payload };
         case FormActions.setName:
             return { ...state, name: action.payload };
-        case FormActions.setLevel:
-            return { ...state, level: action.payload };
-        case FormActions.setEmail:
-            return { ...state, email: action.payload };
-        case FormActions.setGithub:
-            return { ...state, github: action.payload };
+        case FormActions.setSelectedTeamIds:
+            return { ...state, selectedTeamIds: action.payload };
+        case FormActions.setNbOfGroups:
+            return { ...state, nbOfGroups: action.payload };
+        case FormActions.setTournamentType:
+            return { ...state, tournamentType: action.payload };
         default:
             return state;
     }
